@@ -2,7 +2,7 @@
 /**
  * Checkbox field view.
  *
- * @package NerdPress/Admin/View
+ * @package Runguard/Admin/View
  */
 
 if ( ! defined( 'ABSPATH' ) ) {

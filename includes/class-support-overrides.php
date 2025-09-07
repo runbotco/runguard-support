@@ -10,18 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @category Core
  * @author Runguard
  */
-class NerdPress_Support_Overrides {
+class Runguard_Support_Overrides {
 	private static $options_array     = 'runguard_support_settings';
-	private static $nerdpress_options = '';
+	private static $runguard_options = '';
 
 	/**
 	 * Initialize the settings.
 	 */
 	public function __construct() {
-		self::$nerdpress_options = get_option( self::$options_array, array() );
+		self::$runguard_options = get_option( self::$options_array, array() );
 		add_action( 'init', array( $this, 'is_auto_update_set' ) );
 		add_action( 'init', array( $this, 'check_default_options' ) );
-		add_filter( 'wp_mail', array( $this, 'nerdpress_override_alert_email' ) );
+		add_filter( 'wp_mail', array( $this, 'runguard_override_alert_email' ) );
     	add_action( 'admin_head-users.php', array( $this, 'hide_delete_all_content' ) );
 		add_action( 'admin_menu', array( $this, 'hide_logtivity_settings' ) );
 
@@ -38,7 +38,7 @@ class NerdPress_Support_Overrides {
 	}
 
 	public function hide_logtivity_settings() {
-		if ( ! NerdPress_Helpers::is_nerdpress() ) {
+		if ( ! Runguard_Helpers::is_runguard() ) {
 			remove_submenu_page( 'logs', 'logtivity-settings' );
 			remove_submenu_page( 'lgtvy-logs', 'logtivity-settings' );
 			add_filter( 'logtivity_hide_settings_page', '__return_true' );
@@ -58,16 +58,16 @@ class NerdPress_Support_Overrides {
 	}
 
 	public function is_auto_update_set() {
-		if ( ! isset( self::$nerdpress_options['auto_update_core'] ) ) {
+		if ( ! isset( self::$runguard_options['auto_update_core'] ) ) {
 			add_filter( 'allow_major_auto_core_updates', '__return_false' );
 		}
 
-		if ( ! isset( self::$nerdpress_options['auto_update_plugins'] ) && ! NerdPress_Helpers::is_nerdpress() ) {
+		if ( ! isset( self::$runguard_options['auto_update_plugins'] ) && ! Runguard_Helpers::is_runguard() ) {
 			add_filter( 'plugins_auto_update_enabled', '__return_false' );
 			add_filter( 'auto_update_plugin', '__return_false' );
 		}
 
-		if ( ! isset( self::$nerdpress_options['auto_update_themes'] ) && ! NerdPress_Helpers::is_nerdpress() ) {
+		if ( ! isset( self::$runguard_options['auto_update_themes'] ) && ! Runguard_Helpers::is_runguard() ) {
 			add_filter( 'themes_auto_update_enabled', '__return_false' );
 			add_filter( 'auto_update_theme', '__return_false' );
 		}
@@ -78,26 +78,26 @@ class NerdPress_Support_Overrides {
 	 */
 	public function check_default_options() {
 		// No default options needed anymore
-		$nerdpress_default_options = array();
+		$runguard_default_options = array();
 
-		foreach ( $nerdpress_default_options as $key => $val ) {
-			if ( ! array_key_exists( $key, self::$nerdpress_options ) || ! isset( self::$nerdpress_options[ $key ] ) ) {
-				self::$nerdpress_options[ $key ] = $val;
+		foreach ( $runguard_default_options as $key => $val ) {
+			if ( ! array_key_exists( $key, self::$runguard_options ) || ! isset( self::$runguard_options[ $key ] ) ) {
+				self::$runguard_options[ $key ] = $val;
 			}
 		}
 
-		update_option( self::$options_array, self::$nerdpress_options );
+		update_option( self::$options_array, self::$runguard_options );
 	}
 
-	public function nerdpress_override_alert_email( $atts ) {
+	public function runguard_override_alert_email( $atts ) {
 		$email_list         = !is_array( $atts['to'] ) ? [ $atts['to'] ] : $atts['to'];
-		$is_nerdpress_alert = false;
+		$is_runguard_alert = false;
 		foreach ( $email_list as $email ) {
-			if ( ( str_contains( $email, 'alerts@nerdpress.net' ) != false) || ( str_contains( $email, 'alerts@blogtutor.com' ) != false ) ) {
-				$is_nerdpress_alert = true;
+			if ( ( str_contains( $email, 'alerts@runguard.net' ) != false) || ( str_contains( $email, 'alerts@blogtutor.com' ) != false ) ) {
+				$is_runguard_alert = true;
 			}
 		}
-		if ( $is_nerdpress_alert ) {
+		if ( $is_runguard_alert ) {
 
 			$sitename = wp_parse_url( network_home_url(), PHP_URL_HOST );
 			if ( 'www.' === substr( $sitename, 0, 4 ) ) {
@@ -114,4 +114,4 @@ class NerdPress_Support_Overrides {
 	}
 }
 
-new NerdPress_Support_Overrides();
+new Runguard_Support_Overrides();

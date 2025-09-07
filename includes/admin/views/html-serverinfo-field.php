@@ -20,12 +20,12 @@ function string_to_bytes( $string ) {
 
 ?>
 
-<link rel="stylesheet" href="<?php echo NerdPress::$plugin_dir_url . 'includes/css/html-serverinfo-field-style.css'; ?>" type="text/css" media="all">
+<link rel="stylesheet" href="<?php echo Runguard::$plugin_dir_url . 'includes/css/html-serverinfo-field-style.css'; ?>" type="text/css" media="all">
 
 <?php
-$disk_total = NerdPress_Helpers::format_size( NerdPress_Helpers::get_disk_info()['disk_total'] );
-$disk_used  = NerdPress_Helpers::format_size( NerdPress_Helpers::get_disk_info()['disk_used'] );
-$disk_free  = NerdPress_Helpers::format_size( NerdPress_Helpers::get_disk_info()['disk_free'] );
+$disk_total = Runguard_Helpers::format_size( Runguard_Helpers::get_disk_info()['disk_total'] );
+$disk_used  = Runguard_Helpers::format_size( Runguard_Helpers::get_disk_info()['disk_used'] );
+$disk_free  = Runguard_Helpers::format_size( Runguard_Helpers::get_disk_info()['disk_free'] );
 
 if ( function_exists( 'sys_getloadavg' ) ) {
 	$loads = sys_getloadavg();
@@ -44,8 +44,8 @@ if ( function_exists( 'sys_getloadavg' ) ) {
 	<h2>Disk Space:</h2>
 	<p>Total: <?php echo esc_html( $disk_total ); ?></p>
 	<div class='progress'>
-		<div class='prgtext <?php if ( NerdPress_Helpers::get_disk_info()['disk_percentage'] > 90 ) echo 'prgtext-danger'; ?>'><?php echo esc_html( NerdPress_Helpers::get_disk_info()['disk_percentage'] ); ?>% Used</div>
-		<div class='prgbar-disk <?php if ( NerdPress_Helpers::get_disk_info()['disk_percentage'] > 90 ) echo 'prgbar-danger'; ?>' style="width: <?php echo esc_html( NerdPress_Helpers::get_disk_info()['disk_percentage'] ); ?>%;"></div>
+		<div class='prgtext <?php if ( Runguard_Helpers::get_disk_info()['disk_percentage'] > 90 ) echo 'prgtext-danger'; ?>'><?php echo esc_html( Runguard_Helpers::get_disk_info()['disk_percentage'] ); ?>% Used</div>
+		<div class='prgbar-disk <?php if ( Runguard_Helpers::get_disk_info()['disk_percentage'] > 90 ) echo 'prgbar-danger'; ?>' style="width: <?php echo esc_html( Runguard_Helpers::get_disk_info()['disk_percentage'] ); ?>%;"></div>
 		<div class='prginfo'>
 			<span style='float: left;'><?php echo esc_html( $disk_used ) . ' used'; ?></span>
 			<span style='float: right;'><?php echo esc_html( $disk_free ) . ' free'; ?></span>
@@ -59,10 +59,10 @@ if ( function_exists( 'sys_getloadavg' ) ) {
 $mem_info = array_filter( @get_system_mem_info() );
 
 if ( array_key_exists( 'MemTotal', $mem_info ) ) {
-	$mem_total            = NerdPress_Helpers::format_size( string_to_bytes( $mem_info['MemTotal'] ) );
-	$mem_available        = NerdPress_Helpers::format_size( string_to_bytes( $mem_info['MemAvailable'] ) );
+	$mem_total            = Runguard_Helpers::format_size( string_to_bytes( $mem_info['MemTotal'] ) );
+	$mem_available        = Runguard_Helpers::format_size( string_to_bytes( $mem_info['MemAvailable'] ) );
 	$mem_used_unformatted = string_to_bytes( $mem_info['MemTotal'] ) - string_to_bytes( $mem_info['MemAvailable'] );
-	$mem_used             = NerdPress_Helpers::format_size( $mem_used_unformatted );
+	$mem_used             = Runguard_Helpers::format_size( $mem_used_unformatted );
 	$mem_percentage       = sprintf( '%.2f', ( $mem_used_unformatted / string_to_bytes( $mem_info['MemTotal'] ) ) * 100 );
 
 	if ( $mem_percentage > 90 ) {

@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Runguard Support
  * Description: Provides WordPress auto-update management and the "Runguard Help" support widget in your dashboard.
- * Version:     1.1
+ * Version:     1.2
  * Author:      Runguard
  * Author URI:  https://runguard.co
  * GitHub URI:  runbotco/runguard-support
@@ -20,18 +20,18 @@ include( dirname( __FILE__ ) . '/github-updater.php' );
 include( dirname( __FILE__ ) . '/includes/admin-menu.php' );
 
 if ( ! defined( 'RUNGUARD_PLUGIN_VERSION' ) ) {
-	define( 'RUNGUARD_PLUGIN_VERSION', '1.1' );
+	define( 'RUNGUARD_PLUGIN_VERSION', '1.2' );
 }
 
-if ( ! class_exists( 'NerdPress' ) ) {
+if ( ! class_exists( 'Runguard' ) ) {
 		/**
-		 * NerdPress main class.
+		 * Runguard main class.
 		 *
-		 * @package  NerdPress
+		 * @package  Runguard
 		 * @category Core
 		 * @author   Fernando Acosta, Andrew Wilder, Sergio Scabuzzo
 		 */
-	class NerdPress {
+	class Runguard {
 		/**
 		 * Instance of this class.
 		 *
@@ -40,7 +40,7 @@ if ( ! class_exists( 'NerdPress' ) ) {
 		protected static $instance = null;
 
 		/**
-		 * NerdPress plugin root URL.
+		 * Runguard plugin root URL.
 		 */
 		public static $plugin_dir_url = '';
 
@@ -91,6 +91,6 @@ if ( ! class_exists( 'NerdPress' ) ) {
 	/**
 	 * Init the plugin.
 	 */
-	add_action( 'plugins_loaded', array( 'NerdPress', 'get_instance' ) );
+	add_action( 'plugins_loaded', array( 'Runguard', 'get_instance' ) );
 }
 

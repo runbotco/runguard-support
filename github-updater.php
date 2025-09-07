@@ -2,8 +2,8 @@
 
 defined( 'ABSPATH' ) or exit;
 
-if ( ! class_exists( 'NerdPress_GHU_Core' ) ) {
-	class NerdPress_GHU_Core
+if ( ! class_exists( 'Runguard_GHU_Core' ) ) {
+	class Runguard_GHU_Core
 	{
 		public $update_data = array();
 		public $active_plugins = array();
@@ -181,5 +181,5 @@ if ( ! class_exists( 'NerdPress_GHU_Core' ) ) {
 		}
 	}
 
-	new NerdPress_GHU_Core();
+	new Runguard_GHU_Core();
 }

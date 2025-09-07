@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @category Admin
  * @author   Runguard
  */
-class NerdPress_Admin {
+class Runguard_Admin {
 
 	/**
 	 * Initialize the settings.
@@ -24,24 +24,24 @@ class NerdPress_Admin {
 	 * Add the settings page.
 	 */
 	public function settings_menu() {
-		if ( NerdPress_Helpers::is_nerdpress() ) {
-			add_action( 'admin_notices', array( $this, 'nerdpress_message' ), 59 );
+		if ( Runguard_Helpers::is_runguard() ) {
+			add_action( 'admin_notices', array( $this, 'runguard_message' ), 59 );
 			add_options_page(
 				'Runguard Support',
 				'Runguard Support',
 				'manage_options',
-				'nerdpress-support',
+				'runguard-support',
 				array( $this, 'html_settings_page' )
 			);
 		}
 	}
 
-	public function nerdpress_message() {
+	public function runguard_message() {
 		$option = get_option( 'runguard_support_settings' );
 		if ( ! empty( $option['admin_notice'] ) ) {
 			?>
 			<div class="notice" style="border-left-color:#0F145B">
-				<p><img src="<?php echo esc_url( plugins_url( 'images/nerdpress-icon-250x250.png', dirname( __FILE__ ) ) ); ?>" style="max-width:45px;vertical-align:middle;">Runguard Notes: <strong><?php esc_html_e( $option['admin_notice'] ); ?></strong></p>
+				<p><img src="<?php echo esc_url( plugins_url( 'images/runbot_logo.png', dirname( __FILE__ ) ) ); ?>" style="max-width:45px;vertical-align:middle;">Runguard Notes: <strong><?php esc_html_e( $option['admin_notice'] ); ?></strong></p>
 			</div>
 			<?php
 		}
@@ -67,7 +67,7 @@ class NerdPress_Admin {
 		// Set Custom Fields section.
 		add_settings_section(
 			'options_section',
-			__( '', 'nerdpress-support' ),
+			__( '', 'runguard-support' ),
 			array( $this, 'section_options_callback' ),
 			$settings_option
 		);
@@ -75,70 +75,70 @@ class NerdPress_Admin {
 		// Add admin notice text area
 		add_settings_field(
 			'admin_notice',
-			__( 'Runguard Support Notice', 'nerdpress-support' ),
+			__( 'Runguard Support Notice', 'runguard-support' ),
 			array( $this, 'textarea_element_callback' ),
 			$settings_option,
 			'options_section',
 			array(
 				'menu'        => $settings_option,
 				'id'          => 'admin_notice',
-				'description' => __( 'Enter notice that will show for Runguard admins only.', 'nerdpress-support' ),
+				'description' => __( 'Enter notice that will show for Runguard admins only.', 'runguard-support' ),
 			)
 		);
 
 		// Add option to disable/enable Core auto updates.
 		add_settings_field(
 			'auto_update_core',
-			__( 'Core Auto-Updates', 'nerdpress-support' ),
+			__( 'Core Auto-Updates', 'runguard-support' ),
 			array( $this, 'checkbox_auto_update_core_element_callback' ),
 			$settings_option,
 			'options_section',
 			array(
 				'menu'  => $settings_option,
 				'id'    => 'auto_update_core',
-				'label' => __( 'Enable to allow major version auto-updates for Core.', 'nerdpress-support' ),
+				'label' => __( 'Enable to allow major version auto-updates for Core.', 'runguard-support' ),
 			)
 		);
 
 		// Add option to disable/enable plugin auto updates.
 		add_settings_field(
 			'auto_update_plugins',
-			__( 'Plugin Auto-Updates', 'nerdpress-support' ),
+			__( 'Plugin Auto-Updates', 'runguard-support' ),
 			array( $this, 'checkbox_auto_update_plugins_element_callback' ),
 			$settings_option,
 			'options_section',
 			array(
 				'menu'  => $settings_option,
 				'id'    => 'auto_update_plugins',
-				'label' => __( 'Enable core auto-update functionality for plugins.', 'nerdpress-support' ),
+				'label' => __( 'Enable core auto-update functionality for plugins.', 'runguard-support' ),
 			)
 		);
 
 		// Add option to disable/enable theme auto updates.
 		add_settings_field(
 			'auto_update_themes',
-			__( 'Theme Auto-Updates', 'nerdpress-support' ),
+			__( 'Theme Auto-Updates', 'runguard-support' ),
 			array( $this, 'checkbox_auto_update_themes_element_callback' ),
 			$settings_option,
 			'options_section',
 			array(
 				'menu'  => $settings_option,
 				'id'    => 'auto_update_themes',
-				'label' => __( 'Enable core auto-update functionality for themes.', 'nerdpress-support' ),
+				'label' => __( 'Enable core auto-update functionality for themes.', 'runguard-support' ),
 			)
 		);
 
 		// Add option to hide "Need Help?" tab in dashboard.
 		add_settings_field(
 			'hide_tab',
-			__( 'Hide Help Tab?', 'nerdpress-support' ),
+			__( 'Hide Help Tab?', 'runguard-support' ),
 			array( $this, 'checkbox_element_callback' ),
 			$settings_option,
 			'options_section',
 			array(
 				'menu'  => $settings_option,
 				'id'    => 'hide_tab',
-				'label' => __( 'Hides the "Need Help?" tab in the bottom of the dashboard.', 'nerdpress-support' ),
+				'label' => __( 'Hides the "Need Help?" tab in the bottom of the dashboard.', 'runguard-support' ),
 			)
 		);
 
@@ -148,25 +148,25 @@ class NerdPress_Admin {
 		/**
 		* Server Information form fields.
 		*/
-		$information_option = 'nerdpress_server_information';
+		$information_option = 'runguard_server_information';
 		// Set Custom Fields section.
 		add_settings_section(
 			'information_section',
-			__( '', 'nerdpress-support' ),
+			__( '', 'runguard-support' ),
 			array( $this, 'section_options_callback' ),
 			$information_option
 		);
 
 		add_settings_field(
 			'server_info',
-			__( 'Server Stats', 'nerdpress-support' ),
+			__( 'Server Stats', 'runguard-support' ),
 			array( $this, 'server_info_element_callback' ),
 			$information_option,
 			'information_section',
 			array(
 				'menu'  => $information_option,
 				'id'    => 'server_info',
-				'label' => __( 'Showing server stats and variables.', 'nerdpress-support' ),
+				'label' => __( 'Showing server stats and variables.', 'runguard-support' ),
 			)
 		);
 		register_setting( $information_option, $information_option, array( $this, 'validate_options' ) );
@@ -313,4 +313,4 @@ class NerdPress_Admin {
 	}
 }
 
-new NerdPress_Admin();
+new Runguard_Admin();

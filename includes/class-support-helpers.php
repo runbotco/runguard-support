@@ -10,14 +10,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @category Core
  * @author  Runguard
  */
-class NerdPress_Helpers {
+class Runguard_Helpers {
 	public static $help_scout_widget_init      = 'window.Beacon("init", "dd888cd8-106f-4ce7-8178-cb86abe53ed6")';
 	public static $help_scout_widget_menu_init = 'window.Beacon("init", "dd888cd8-106f-4ce7-8178-cb86abe53ed6"); window.Beacon("open");';
 
 	/**
 	 * Check email address to see if user is a member of the Runguard team (and also an administrator).
 	 */
-	public static function is_nerdpress() {
+	public static function is_runguard() {
 		$current_user = wp_get_current_user();
 		return (
 			current_user_can( 'manage_options' )
@@ -104,9 +104,9 @@ class NerdPress_Helpers {
 
 		$msg_class = ( $msg['status'] ? 'np-notice' : 'error np-notice' );
 		?>
-			<link rel="stylesheet" href="<?php echo esc_url( NerdPress::$plugin_dir_url . 'includes/css/html-notifications-style.css' ); ?>" type="text/css" media="all">
+			<link rel="stylesheet" href="<?php echo esc_url( Runguard::$plugin_dir_url . 'includes/css/html-notifications-style.css' ); ?>" type="text/css" media="all">
 			<div class="notice <?php echo esc_attr( $msg_class ); ?>">
-				<p><img src="<?php echo esc_url( NerdPress::$plugin_dir_url . 'includes/images/nerdpress-icon-250x250.png' ); ?>" style="max-width:45px;vertical-align:middle;"><strong><?php echo esc_html( $msg['msg'] ); ?></strong></p>
+				<p><img src="<?php echo esc_url( Runguard::$plugin_dir_url . 'includes/images/runbot-logo.png' ); ?>" style="max-width:45px;vertical-align:middle;"><strong><?php echo esc_html( $msg['msg'] ); ?></strong></p>
 			</div>
 		<?php
 	}
@@ -117,7 +117,7 @@ class NerdPress_Helpers {
 	 * @return boolean. true if any of the strings match, or the WP_ENVIRONMENT_TYPE constant is set to staging or development
 	 */
 	public static function is_production( $home_url ) {
-		if ( defined( 'NERDPRESS_PRODUCTION_CHECK_BYPASS' ) ) {
+		if ( defined( 'RUNGUARD_PRODUCTION_CHECK_BYPASS' ) ) {
 			return true;
 		}
 

@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @category Widget
  * @author   Runguard
  */
-class NerdPress_Widget {
+class Runguard_Widget {
 	/**
 	 * Initialize the widget.
 	 */
@@ -28,7 +28,13 @@ class NerdPress_Widget {
 
 	public function widget() {
 		$options                = get_option( 'runguard_support_settings', array() );
-		$nerdpress_current_user = wp_get_current_user();
+		$runguard_current_user = wp_get_current_user();
+		
+		// Use first name and last name if available, otherwise use site name
+		$user_name = trim( $runguard_current_user->user_firstname . ' ' . $runguard_current_user->user_lastname );
+		if ( empty( $user_name ) ) {
+			$user_name = get_bloginfo( 'name' );
+		}
 		?>
 		<script type = "text/javascript">
 			! function(e, t, n) {
@@ -46,21 +52,21 @@ class NerdPress_Widget {
 					}, n.readyQueue = [], "complete" === t.readyState) return a();
 				e.attachEvent ? e.attachEvent("onload", a) : e.addEventListener("load", a, !1)
 				e.Beacon('prefill', {
-					name: '<?php echo esc_html( sanitize_text_field( $nerdpress_current_user->user_firstname . ' ' . $nerdpress_current_user->user_lastname ) ); ?>',
-					email: '<?php echo esc_html( sanitize_text_field( $nerdpress_current_user->user_email ) ); ?>'
+					name: '<?php echo esc_html( sanitize_text_field( $user_name ) ); ?>',
+					email: '<?php echo esc_html( sanitize_text_field( $runguard_current_user->user_email ) ); ?>'
 				})
 
 			}(window, document, window.Beacon || function() {});
 		</script>
 		<?php
-		if ( is_admin() && ( ! isset( $options['hide_tab'] ) ) && ! defined('IFRAME_REQUEST') && ! NerdPress_Helpers::is_nerdpress() ) {
+		if ( is_admin() && ( ! isset( $options['hide_tab'] ) ) && ! defined('IFRAME_REQUEST') && ! Runguard_Helpers::is_runguard() ) {
 			?>
 			<script type = "text/javascript">
-				<?php echo NerdPress_Helpers::$help_scout_widget_init; ?>
+				<?php echo Runguard_Helpers::$help_scout_widget_init; ?>
 			</script>
 			<?php
 		}
 	}
 }
 
-new NerdPress_Widget();
+new Runguard_Widget();
