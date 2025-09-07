@@ -40,8 +40,8 @@ class Runguard_Admin {
 		$option = get_option( 'runguard_support_settings' );
 		if ( ! empty( $option['admin_notice'] ) ) {
 			?>
-			<div class="notice" style="border-left-color:#0F145B">
-				<p><img src="<?php echo esc_url( plugins_url( 'images/runbot_logo.png', dirname( __FILE__ ) ) ); ?>" style="max-width:45px;vertical-align:middle;">Runguard Notes: <strong><?php esc_html_e( $option['admin_notice'] ); ?></strong></p>
+			<div class="notice" style="border-left-color:#BAE0F4">
+				<p><img src="<?php echo esc_url( plugins_url( 'images/runbot-logo.png', dirname( __FILE__ ) ) ); ?>" style="max-width:45px;vertical-align:middle;">Runguard Notes: <strong><?php esc_html_e( $option['admin_notice'] ); ?></strong></p>
 			</div>
 			<?php
 		}
