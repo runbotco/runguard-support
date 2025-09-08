@@ -23,7 +23,7 @@ class Runguard_Support_Overrides {
 		add_action( 'init', array( $this, 'check_default_options' ) );
 		add_filter( 'wp_mail', array( $this, 'runguard_override_alert_email' ) );
     	add_action( 'admin_head-users.php', array( $this, 'hide_delete_all_content' ) );
-		add_action( 'admin_menu', array( $this, 'hide_logtivity_settings' ) );
+		add_action( 'admin_menu', array( $this, 'hide_logtivity_settings' ), 999 );
 		add_action( 'admin_menu', array( $this, 'hide_wp_umbrella_settings' ) );
 		add_action( 'admin_menu', array( $this, 'hide_site_health_page' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'hide_site_health_widget' ) );
@@ -42,17 +42,18 @@ class Runguard_Support_Overrides {
 	}
 
 	public function hide_logtivity_settings() {
-		// Check if the Logtivity menu should be hidden from normal users
-		$enable_logtivity = isset( self::$runguard_options['enable_logtivity_menu'] ) && self::$runguard_options['enable_logtivity_menu'];
-		
 		if ( ! Runguard_Helpers::is_runguard() ) {
-			// Always hide Logtivity settings page from normal users
+			// ALWAYS hide Logtivity settings page from normal users (regardless of checkbox)
 			remove_submenu_page( 'logs', 'logtivity-settings' );
 			remove_submenu_page( 'lgtvy-logs', 'logtivity-settings' );
+			remove_submenu_page( 'options-general.php', 'logtivity-settings' );
 			add_filter( 'logtivity_hide_settings_page', '__return_true' );
 			
-			// If setting is enabled, also hide entire Logtivity menu from normal users
-			if ( $enable_logtivity ) {
+			// Check if the entire Logtivity menu should be hidden
+			$hide_logtivity = isset( self::$runguard_options['enable_logtivity_menu'] ) && self::$runguard_options['enable_logtivity_menu'];
+			
+			// If checkbox is checked, also hide entire Logtivity menu from normal users
+			if ( $hide_logtivity ) {
 				remove_menu_page( 'logs' );
 				remove_menu_page( 'lgtvy-logs' );
 			}
