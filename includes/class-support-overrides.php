@@ -81,7 +81,7 @@ class Runguard_Support_Overrides {
 			}
 			if ( $hide_wp_umbrella ) {
 				// Hide WP Umbrella plugin from non-Runguard admins when setting is enabled
-				unset( $plugins['wp-umbrella/wp-umbrella.php'] );
+				unset( $plugins['wp-health/wp-health.php'] );
 			}
 		}
 		return $plugins;
