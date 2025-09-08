@@ -42,20 +42,19 @@ class Runguard_Support_Overrides {
 	}
 
 	public function hide_logtivity_settings() {
-		// Check if the Logtivity menu should be enabled for normal users
+		// Check if the Logtivity menu should be hidden from normal users
 		$enable_logtivity = isset( self::$runguard_options['enable_logtivity_menu'] ) && self::$runguard_options['enable_logtivity_menu'];
 		
 		if ( ! Runguard_Helpers::is_runguard() ) {
-			// If setting is enabled, hide entire Logtivity menu from normal users
+			// Always hide Logtivity settings page from normal users
+			remove_submenu_page( 'logs', 'logtivity-settings' );
+			remove_submenu_page( 'lgtvy-logs', 'logtivity-settings' );
+			add_filter( 'logtivity_hide_settings_page', '__return_true' );
+			
+			// If setting is enabled, also hide entire Logtivity menu from normal users
 			if ( $enable_logtivity ) {
 				remove_menu_page( 'logs' );
 				remove_menu_page( 'lgtvy-logs' );
-				add_filter( 'logtivity_hide_settings_page', '__return_true' );
-			} else {
-				// Default behavior - only hide settings page
-				remove_submenu_page( 'logs', 'logtivity-settings' );
-				remove_submenu_page( 'lgtvy-logs', 'logtivity-settings' );
-				add_filter( 'logtivity_hide_settings_page', '__return_true' );
 			}
 		}
 	}
