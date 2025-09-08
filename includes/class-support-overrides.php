@@ -25,6 +25,8 @@ class Runguard_Support_Overrides {
     	add_action( 'admin_head-users.php', array( $this, 'hide_delete_all_content' ) );
 		add_action( 'admin_menu', array( $this, 'hide_logtivity_settings' ) );
 		add_action( 'admin_menu', array( $this, 'hide_wp_umbrella_settings' ) );
+		add_action( 'admin_menu', array( $this, 'hide_site_health_page' ) );
+		add_action( 'wp_dashboard_setup', array( $this, 'hide_site_health_widget' ) );
 		add_filter( 'all_plugins', array( $this, 'hide_runguard_plugin_from_list' ) );
 
 		if ( class_exists( 'WooCommerce' ) ) {
@@ -35,7 +37,7 @@ class Runguard_Support_Overrides {
 	}
 
 	public static function remove_site_health_test( $tests ) {
-		unset( $tests['direct']['persistent_object_cache'], $tests['direct']['yoast-page-comments-check'] );
+		unset( $tests['direct']['persistent_object_cache'] );
 		return $tests;
 	}
 
@@ -65,6 +67,20 @@ class Runguard_Support_Overrides {
 		if ( ! Runguard_Helpers::is_runguard() && $hide_wp_umbrella ) {
 			// Hide WP Umbrella settings page from normal users
 			remove_submenu_page( 'options-general.php', 'wp-umbrella-settings' );
+		}
+	}
+
+	public function hide_site_health_page() {
+		if ( ! Runguard_Helpers::is_runguard() ) {
+			// Hide Site Health page from Tools menu for non-Runguard admins
+			remove_submenu_page( 'tools.php', 'site-health.php' );
+		}
+	}
+
+	public function hide_site_health_widget() {
+		if ( ! Runguard_Helpers::is_runguard() ) {
+			// Hide Site Health Status dashboard widget for non-Runguard admins
+			remove_meta_box( 'dashboard_site_health', 'dashboard', 'normal' );
 		}
 	}
 
@@ -135,7 +151,7 @@ class Runguard_Support_Overrides {
 		$email_list         = !is_array( $atts['to'] ) ? [ $atts['to'] ] : $atts['to'];
 		$is_runguard_alert = false;
 		foreach ( $email_list as $email ) {
-			if ( ( str_contains( $email, 'alerts@runguard.net' ) != false) || ( str_contains( $email, 'alerts@blogtutor.com' ) != false ) ) {
+			if ( ( str_contains( $email, 'alerts@runguard.net' ) != false) || ( str_contains( $email, 'alerts@runbot.co' ) != false ) ) {
 				$is_runguard_alert = true;
 			}
 		}

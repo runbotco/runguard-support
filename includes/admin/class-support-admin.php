@@ -27,8 +27,8 @@ class Runguard_Admin {
 		if ( Runguard_Helpers::is_runguard() ) {
 			add_action( 'admin_notices', array( $this, 'runguard_message' ), 59 );
 			add_options_page(
-				'Runguard Support',
-				'Runguard Support',
+				'Runbot Support',
+				'Runbot Support',
 				'manage_options',
 				'runguard-support',
 				array( $this, 'html_settings_page' )
@@ -41,7 +41,7 @@ class Runguard_Admin {
 		if ( ! empty( $option['admin_notice'] ) ) {
 			?>
 			<div class="notice" style="border-left-color:#BAE0F4">
-				<p><img src="<?php echo esc_url( plugins_url( 'images/runbot-logo.png', dirname( __FILE__ ) ) ); ?>" style="max-width:45px;margin-right:15px;vertical-align:middle;"><strong>Runguard Notes:</strong> <?php esc_html_e( $option['admin_notice'] ); ?></p>
+				<p><img src="<?php echo esc_url( plugins_url( 'images/runbot-logo.png', dirname( __FILE__ ) ) ); ?>" style="max-width:45px;margin-right:15px;vertical-align:middle;"><strong>Support Notes:</strong> <?php esc_html_e( $option['admin_notice'] ); ?></p>
 			</div>
 			<?php
 		}
@@ -128,33 +128,37 @@ class Runguard_Admin {
 			)
 		);
 
-		// Add option to hide Logtivity from normal users.
-		add_settings_field(
-			'enable_logtivity_menu',
-			__( 'Hide Logtivity?', 'runguard-support' ),
-			array( $this, 'checkbox_element_callback' ),
-			$settings_option,
-			'options_section',
-			array(
-				'menu'  => $settings_option,
-				'id'    => 'enable_logtivity_menu',
-				'label' => __( 'When checked, hides Logtivity menu and plugin from normal users (only Runguard admins can see it).', 'runguard-support' ),
-			)
-		);
+		// Add option to hide Logtivity from normal users (only show if Logtivity is installed).
+		if ( $this->is_plugin_installed( 'logtivity/logtivity.php' ) ) {
+			add_settings_field(
+				'enable_logtivity_menu',
+				__( 'Hide Logtivity?', 'runguard-support' ),
+				array( $this, 'checkbox_element_callback' ),
+				$settings_option,
+				'options_section',
+				array(
+					'menu'  => $settings_option,
+					'id'    => 'enable_logtivity_menu',
+					'label' => __( 'When checked, hides Logtivity menu and plugin from normal users (only Runguard admins can see it).', 'runguard-support' ),
+				)
+			);
+		}
 
-		// Add option to hide WP Umbrella from normal users.
-		add_settings_field(
-			'hide_wp_umbrella',
-			__( 'Hide WP Umbrella?', 'runguard-support' ),
-			array( $this, 'checkbox_element_callback' ),
-			$settings_option,
-			'options_section',
-			array(
-				'menu'  => $settings_option,
-				'id'    => 'hide_wp_umbrella',
-				'label' => __( 'When checked, hides WP Umbrella settings and plugin from normal users (only Runguard admins can see it).', 'runguard-support' ),
-			)
-		);
+		// Add option to hide WP Umbrella from normal users (only show if WP Umbrella is installed).
+		if ( $this->is_plugin_installed( 'wp-health/wp-health.php' ) ) {
+			add_settings_field(
+				'hide_wp_umbrella',
+				__( 'Hide WP Umbrella?', 'runguard-support' ),
+				array( $this, 'checkbox_element_callback' ),
+				$settings_option,
+				'options_section',
+				array(
+					'menu'  => $settings_option,
+					'id'    => 'hide_wp_umbrella',
+					'label' => __( 'When checked, hides WP Umbrella settings and plugin from normal users (only Runguard admins can see it).', 'runguard-support' ),
+				)
+			);
+		}
 
 		// Add option to hide "Need Help?" tab in dashboard.
 		add_settings_field(
@@ -317,6 +321,17 @@ class Runguard_Admin {
 		}
 
 		include dirname( __FILE__ ) . '/views/html-serverinfo-field.php';
+	}
+
+	/**
+	 * Check if a plugin is installed.
+	 *
+	 * @param  string $plugin_path Plugin path (e.g., 'plugin-folder/plugin-file.php').
+	 * @return bool                True if plugin is installed, false otherwise.
+	 */
+	private function is_plugin_installed( $plugin_path ) {
+		$all_plugins = get_plugins();
+		return array_key_exists( $plugin_path, $all_plugins );
 	}
 
 	/**

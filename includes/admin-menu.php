@@ -12,24 +12,24 @@ function bt_custom_toolbar_links( $wp_admin_bar ) {
 			<link rel="stylesheet" href="<?php echo Runguard::$plugin_dir_url . 'includes/css/html-admin-menu.css?ver=' . RUNGUARD_PLUGIN_VERSION; ?>" type="text/css" media="all">
 		<?php
 
-		// Add "Runguard" parent menu items.
+		// Add "Runbot Help" parent menu items.
 		$args = array(
 			'id'     => 'runguard-menu',
-			'title'  => '<span class="ab-icon"></span><span class="ab-label">' . __( 'Runguard', 'runguard-support' ) . '</span>',
+			'title'  => '<span class="ab-icon"></span><span class="ab-label">' . __( 'Runbot Help', 'runguard-support' ) . '</span>',
 			'parent' => false,
 		);
 		$wp_admin_bar->add_node( $args );
 
-		// "Get Help" link to open the Support Hero widget
+		// "Request Support" link to open the Support Hero widget
 		if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'feast-support' ) {
 			$args = array(
 				'id'     => 'bt-get-help',
-				'title'  => 'Get Help',
+				'title'  => 'Request Support',
 				'href'   => '#',
 				'parent' => 'runguard-menu',
 				'meta'   => array(
 					'class'   => 'btButton',
-					'title'   => 'Click to open our knowledge base and contact form.',
+					'title'   => 'Click to open the support contact form.',
 					'onclick' => Runguard_Helpers::$help_scout_widget_menu_init,
 				),
 			);
@@ -46,7 +46,7 @@ function bt_custom_toolbar_links( $wp_admin_bar ) {
 				'parent' => 'runguard-menu',
 				'meta'   => array(
 					'class' => 'btButton',
-					'title' => 'Open Runguard Support plugin settings.',
+					'title' => 'Open Runbot Support plugin settings.',
 				),
 			);
 			$wp_admin_bar->add_node( $args );
