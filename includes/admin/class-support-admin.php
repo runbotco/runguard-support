@@ -142,6 +142,20 @@ class Runguard_Admin {
 			)
 		);
 
+		// Add option to hide WP Umbrella from normal users.
+		add_settings_field(
+			'hide_wp_umbrella',
+			__( 'Hide WP Umbrella?', 'runguard-support' ),
+			array( $this, 'checkbox_element_callback' ),
+			$settings_option,
+			'options_section',
+			array(
+				'menu'  => $settings_option,
+				'id'    => 'hide_wp_umbrella',
+				'label' => __( 'When checked, hides WP Umbrella settings and plugin from normal users (only Runguard admins can see it).', 'runguard-support' ),
+			)
+		);
+
 		// Add option to hide "Need Help?" tab in dashboard.
 		add_settings_field(
 			'hide_tab',

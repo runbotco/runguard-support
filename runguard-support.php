@@ -2,8 +2,8 @@
 
 /**
  * Plugin Name: Runguard Support
- * Description: Provides WordPress auto-update management and the "Runguard Help" support widget in your dashboard.
- * Version:     1.5
+ * Description: Lightweight WordPress management and monitoring plugin for ongoing site maintenance and support services.
+ * Version:     1.6
  * Author:      Runguard
  * Author URI:  https://runguard.co
  * GitHub URI:  runbotco/runguard-support
@@ -20,7 +20,7 @@ include( dirname( __FILE__ ) . '/github-updater.php' );
 include( dirname( __FILE__ ) . '/includes/admin-menu.php' );
 
 if ( ! defined( 'RUNGUARD_PLUGIN_VERSION' ) ) {
-	define( 'RUNGUARD_PLUGIN_VERSION', '1.5' );
+	define( 'RUNGUARD_PLUGIN_VERSION', '1.6' );
 }
 
 if ( ! class_exists( 'Runguard' ) ) {

@@ -24,6 +24,7 @@ class Runguard_Support_Overrides {
 		add_filter( 'wp_mail', array( $this, 'runguard_override_alert_email' ) );
     	add_action( 'admin_head-users.php', array( $this, 'hide_delete_all_content' ) );
 		add_action( 'admin_menu', array( $this, 'hide_logtivity_settings' ) );
+		add_action( 'admin_menu', array( $this, 'hide_wp_umbrella_settings' ) );
 		add_filter( 'all_plugins', array( $this, 'hide_runguard_plugin_from_list' ) );
 
 		if ( class_exists( 'WooCommerce' ) ) {
@@ -57,13 +58,31 @@ class Runguard_Support_Overrides {
 		}
 	}
 
+	public function hide_wp_umbrella_settings() {
+		// Check if WP Umbrella should be hidden from normal users
+		$hide_wp_umbrella = isset( self::$runguard_options['hide_wp_umbrella'] ) && self::$runguard_options['hide_wp_umbrella'];
+		
+		if ( ! Runguard_Helpers::is_runguard() && $hide_wp_umbrella ) {
+			// Hide WP Umbrella settings page from normal users
+			remove_submenu_page( 'options-general.php', 'wp-umbrella-settings' );
+		}
+	}
+
 	public function hide_runguard_plugin_from_list( $plugins ) {
 		// Check if the Logtivity menu setting is enabled
 		$enable_logtivity = isset( self::$runguard_options['enable_logtivity_menu'] ) && self::$runguard_options['enable_logtivity_menu'];
+		// Check if WP Umbrella should be hidden
+		$hide_wp_umbrella = isset( self::$runguard_options['hide_wp_umbrella'] ) && self::$runguard_options['hide_wp_umbrella'];
 		
-		if ( ! Runguard_Helpers::is_runguard() && $enable_logtivity ) {
-			// Hide Logtivity plugin from non-Runguard admins when setting is enabled
-			unset( $plugins['logtivity/logtivity.php'] );
+		if ( ! Runguard_Helpers::is_runguard() ) {
+			if ( $enable_logtivity ) {
+				// Hide Logtivity plugin from non-Runguard admins when setting is enabled
+				unset( $plugins['logtivity/logtivity.php'] );
+			}
+			if ( $hide_wp_umbrella ) {
+				// Hide WP Umbrella plugin from non-Runguard admins when setting is enabled
+				unset( $plugins['wp-umbrella/wp-umbrella.php'] );
+			}
 		}
 		return $plugins;
 	}
