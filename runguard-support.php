@@ -22,7 +22,7 @@ include( dirname( __FILE__ ) . '/includes/admin-menu.php' );
 if ( ! defined( 'RUNGUARD_PLUGIN_VERSION' ) ) {
 	define( 'RUNGUARD_PLUGIN_VERSION', '1.8.2' );
 }
-i d
+
 if ( ! class_exists( 'Runguard' ) ) {
 		/**
 		 * Runguard main class.

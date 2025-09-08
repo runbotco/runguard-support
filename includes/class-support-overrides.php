@@ -23,7 +23,7 @@ class Runguard_Support_Overrides {
 		add_action( 'init', array( $this, 'check_default_options' ) );
 		add_filter( 'wp_mail', array( $this, 'runguard_override_alert_email' ) );
     	add_action( 'admin_head-users.php', array( $this, 'hide_delete_all_content' ) );
-		add_action( 'admin_menu', array( $this, 'hide_logtivity_settings' ) );
+		add_action( 'admin_menu', array( $this, 'hide_logtivity_settings' ), 999 );
 		add_action( 'admin_menu', array( $this, 'hide_wp_umbrella_settings' ) );
 		add_action( 'admin_menu', array( $this, 'hide_site_health_page' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'hide_site_health_widget' ) );
@@ -43,18 +43,18 @@ class Runguard_Support_Overrides {
 
 	public function hide_logtivity_settings() {
 		if ( ! Runguard_Helpers::is_runguard() ) {
-			// Always hide Logtivity settings page
-			remove_submenu_page( 'logs', 'logtivity-settings' );
-			remove_submenu_page( 'lgtvy-logs', 'logtivity-settings' );
-			add_filter( 'logtivity_hide_settings_page', '__return_true' );
+			$current_options = get_option( 'runguard_support_settings', array() );
+			$hide_complete_menu = isset( $current_options['enable_logtivity_menu'] ) && $current_options['enable_logtivity_menu'];
 			
-			// Check if entire menu should be hidden
-			$enable_logtivity = isset( self::$runguard_options['enable_logtivity_menu'] ) && self::$runguard_options['enable_logtivity_menu'];
-			
-			if ( $enable_logtivity ) {
-				remove_menu_page( 'logs' );
-				remove_menu_page( 'lgtvy-logs' );
+			if ( $hide_complete_menu ) {
+				// Checkbox ist an - KOMPLETTES MENU weg
+				remove_menu_page( 'logtivity' );
+			} else {
+				// Checkbox ist aus - nur Settings weg
+				remove_submenu_page( 'logtivity', 'logtivity-settings' );
 			}
+			
+			add_filter( 'logtivity_hide_settings_page', '__return_true' );
 		}
 	}
 
