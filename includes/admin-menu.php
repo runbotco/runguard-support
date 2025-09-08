@@ -12,21 +12,13 @@ function bt_custom_toolbar_links( $wp_admin_bar ) {
 			<link rel="stylesheet" href="<?php echo Runguard::$plugin_dir_url . 'includes/css/html-admin-menu.css?ver=' . RUNGUARD_PLUGIN_VERSION; ?>" type="text/css" media="all">
 		<?php
 
-		// Add "Runbot Help" parent menu items.
-		$args = array(
-			'id'     => 'runguard-menu',
-			'title'  => '<span class="ab-icon"></span><span class="ab-label">' . __( 'Runbot Help', 'runguard-support' ) . '</span>',
-			'parent' => false,
-		);
-		$wp_admin_bar->add_node( $args );
-
-		// "Request Support" link to open the Support Hero widget
+		// Add "Runbot Help" menu item that directly opens support chat
 		if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'feast-support' ) {
 			$args = array(
-				'id'     => 'bt-get-help',
-				'title'  => 'Request Support',
+				'id'     => 'runguard-menu',
+				'title'  => '<span class="ab-icon"></span><span class="ab-label">' . __( 'Runbot Help', 'runguard-support' ) . '</span>',
 				'href'   => '#',
-				'parent' => 'runguard-menu',
+				'parent' => false,
 				'meta'   => array(
 					'class'   => 'btButton',
 					'title'   => 'Click to open the support contact form.',
