@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Runbot Support
  * Description: Lightweight WordPress management & monitoring plugin for ongoing site maintenance and support services.
- * Version:     1.8.2
+ * Version:     1.8.3
  * Author:      runbot.co
  * Author URI:  https://runbot.co
  * GitHub URI:  runbotco/runguard-support
@@ -20,7 +20,7 @@ include( dirname( __FILE__ ) . '/github-updater.php' );
 include( dirname( __FILE__ ) . '/includes/admin-menu.php' );
 
 if ( ! defined( 'RUNGUARD_PLUGIN_VERSION' ) ) {
-	define( 'RUNGUARD_PLUGIN_VERSION', '1.8.2' );
+	define( 'RUNGUARD_PLUGIN_VERSION', '1.8.3' );
 }
 
 if ( ! class_exists( 'Runguard' ) ) {

@@ -49,8 +49,7 @@
 	#wp-admin-bar-root-default
 	li#wp-admin-bar-runguard-menu:hover
 	.ab-icon {
-	filter: invert(67%) sepia(22%) saturate(892%) hue-rotate(170deg)
-		brightness(96%) contrast(87%) !important;
+	filter: brightness(0) saturate(100%) invert(71%) sepia(7%) saturate(3627%) hue-rotate(179deg) brightness(94%) contrast(92%) !important;
 }
 .runguard-relay-traffic-chart {
 	min-height: 265px;
