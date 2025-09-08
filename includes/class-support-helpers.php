@@ -106,7 +106,7 @@ class Runguard_Helpers {
 		?>
 			<link rel="stylesheet" href="<?php echo esc_url( Runguard::$plugin_dir_url . 'includes/css/html-notifications-style.css' ); ?>" type="text/css" media="all">
 			<div class="notice <?php echo esc_attr( $msg_class ); ?>">
-				<p><img src="<?php echo esc_url( Runguard::$plugin_dir_url . 'includes/images/runbot-logo.png' ); ?>" style="max-width:45px;vertical-align:middle;"><strong><?php echo esc_html( $msg['msg'] ); ?></strong></p>
+				<p><img src="<?php echo esc_url( Runguard::$plugin_dir_url . 'includes/images/runbot-logo.png' ); ?>" style="max-width:45px;margin-right:15px;vertical-align:middle;"><strong><?php echo esc_html( $msg['msg'] ); ?></strong></p>
 			</div>
 		<?php
 	}

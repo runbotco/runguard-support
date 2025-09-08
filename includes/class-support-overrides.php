@@ -24,6 +24,7 @@ class Runguard_Support_Overrides {
 		add_filter( 'wp_mail', array( $this, 'runguard_override_alert_email' ) );
     	add_action( 'admin_head-users.php', array( $this, 'hide_delete_all_content' ) );
 		add_action( 'admin_menu', array( $this, 'hide_logtivity_settings' ) );
+		add_filter( 'all_plugins', array( $this, 'hide_runguard_plugin_from_list' ) );
 
 		if ( class_exists( 'WooCommerce' ) ) {
 			add_filter( 'woocommerce_background_image_regeneration', '__return_false' );
@@ -38,11 +39,29 @@ class Runguard_Support_Overrides {
 	}
 
 	public function hide_logtivity_settings() {
+		// Check if the Logtivity menu should be enabled for normal users
+		$enable_logtivity = isset( self::$runguard_options['enable_logtivity_menu'] ) && self::$runguard_options['enable_logtivity_menu'];
+		
 		if ( ! Runguard_Helpers::is_runguard() ) {
-			remove_submenu_page( 'logs', 'logtivity-settings' );
-			remove_submenu_page( 'lgtvy-logs', 'logtivity-settings' );
-			add_filter( 'logtivity_hide_settings_page', '__return_true' );
+			// If setting is enabled, hide entire Logtivity menu from normal users
+			if ( $enable_logtivity ) {
+				remove_menu_page( 'logs' );
+				remove_menu_page( 'lgtvy-logs' );
+				add_filter( 'logtivity_hide_settings_page', '__return_true' );
+			} else {
+				// Default behavior - only hide settings page
+				remove_submenu_page( 'logs', 'logtivity-settings' );
+				remove_submenu_page( 'lgtvy-logs', 'logtivity-settings' );
+				add_filter( 'logtivity_hide_settings_page', '__return_true' );
+			}
 		}
+	}
+
+	public function hide_runguard_plugin_from_list( $plugins ) {
+		if ( ! Runguard_Helpers::is_runguard() ) {
+			unset( $plugins['runguard-support/runguard-support.php'] );
+		}
+		return $plugins;
 	}
 
 	public function hide_delete_all_content() {
