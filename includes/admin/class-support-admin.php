@@ -41,7 +41,7 @@ class Runguard_Admin {
 		if ( ! empty( $option['admin_notice'] ) ) {
 			?>
 			<div class="notice" style="border-left-color:#BAE0F4">
-				<p><img src="<?php echo esc_url( plugins_url( 'images/runbot-logo.png', dirname( __FILE__ ) ) ); ?>" style="max-width:45px;margin-right:15px;vertical-align:middle;">Runguard Notes: <strong><?php esc_html_e( $option['admin_notice'] ); ?></strong></p>
+				<p><img src="<?php echo esc_url( plugins_url( 'images/runbot-logo.png', dirname( __FILE__ ) ) ); ?>" style="max-width:45px;margin-right:15px;vertical-align:middle;"><strong>Runguard Notes:</strong> <?php esc_html_e( $option['admin_notice'] ); ?></p>
 			</div>
 			<?php
 		}
@@ -128,17 +128,17 @@ class Runguard_Admin {
 			)
 		);
 
-		// Add option to enable Logtivity menu for normal users.
+		// Add option to hide Logtivity from normal users.
 		add_settings_field(
 			'enable_logtivity_menu',
-			__( 'Enable Logtivity Menu?', 'runguard-support' ),
+			__( 'Hide Logtivity?', 'runguard-support' ),
 			array( $this, 'checkbox_element_callback' ),
 			$settings_option,
 			'options_section',
 			array(
 				'menu'  => $settings_option,
 				'id'    => 'enable_logtivity_menu',
-				'label' => __( 'When checked, only Runguard admins can see the Logtivity menu item.', 'runguard-support' ),
+				'label' => __( 'When checked, hides Logtivity menu and plugin from normal users (only Runguard admins can see it).', 'runguard-support' ),
 			)
 		);
 

@@ -58,8 +58,12 @@ class Runguard_Support_Overrides {
 	}
 
 	public function hide_runguard_plugin_from_list( $plugins ) {
-		if ( ! Runguard_Helpers::is_runguard() ) {
-			unset( $plugins['runguard-support/runguard-support.php'] );
+		// Check if the Logtivity menu setting is enabled
+		$enable_logtivity = isset( self::$runguard_options['enable_logtivity_menu'] ) && self::$runguard_options['enable_logtivity_menu'];
+		
+		if ( ! Runguard_Helpers::is_runguard() && $enable_logtivity ) {
+			// Hide Logtivity plugin from non-Runguard admins when setting is enabled
+			unset( $plugins['logtivity/logtivity.php'] );
 		}
 		return $plugins;
 	}
