@@ -25,6 +25,9 @@ class Runguard_Support_Overrides {
     	add_action( 'admin_head-users.php', array( $this, 'hide_delete_all_content' ) );
 		add_action( 'admin_menu', array( $this, 'hide_logtivity_settings' ), 999 );
 		add_action( 'admin_menu', array( $this, 'hide_wp_umbrella_settings' ) );
+		add_action( 'admin_menu', array( $this, 'hide_wpvivid_menu' ), 999 );
+		add_action( 'admin_menu', array( $this, 'hide_wpvivid_menu' ), 9999 );
+		add_action( 'admin_init', array( $this, 'hide_wpvivid_menu_late' ) );
 		add_action( 'admin_menu', array( $this, 'hide_site_health_page' ) );
 		add_action( 'wp_dashboard_setup', array( $this, 'hide_site_health_widget' ) );
 		add_filter( 'all_plugins', array( $this, 'hide_runguard_plugin_from_list' ) );
@@ -61,10 +64,52 @@ class Runguard_Support_Overrides {
 	public function hide_wp_umbrella_settings() {
 		// Check if WP Umbrella should be hidden from normal users
 		$hide_wp_umbrella = isset( self::$runguard_options['hide_wp_umbrella'] ) && self::$runguard_options['hide_wp_umbrella'];
-		
+
 		if ( ! Runguard_Helpers::is_runguard() && $hide_wp_umbrella ) {
 			// Hide WP Umbrella settings page from normal users
 			remove_submenu_page( 'options-general.php', 'wp-umbrella-settings' );
+		}
+	}
+
+	public function hide_wpvivid_menu() {
+		// Check if WPvivid should be hidden from normal users
+		$hide_wpvivid = isset( self::$runguard_options['hide_wpvivid'] ) && self::$runguard_options['hide_wpvivid'];
+
+		if ( ! Runguard_Helpers::is_runguard() && $hide_wpvivid ) {
+			// Hide WPvivid main menu and all submenus from normal users
+			remove_menu_page( 'wpvivid-dashboard' );  // Free version
+			remove_menu_page( 'wpvivid-backup' );
+			remove_menu_page( 'WPvivid' );            // Pro version (capital letters)
+			remove_menu_page( 'wpvivid' );            // Lowercase version
+
+			// Handle white-labeled versions
+			$white_label_slug = apply_filters( 'wpvivid_white_label_slug', 'wpvivid' );
+			remove_menu_page( $white_label_slug . '-dashboard' );
+			remove_menu_page( $white_label_slug . '-backup' );
+			remove_menu_page( ucfirst( $white_label_slug ) );  // Capitalized white label
+		}
+	}
+
+	public function hide_wpvivid_menu_late() {
+		// Check if WPvivid should be hidden from normal users
+		$hide_wpvivid = isset( self::$runguard_options['hide_wpvivid'] ) && self::$runguard_options['hide_wpvivid'];
+
+		if ( ! Runguard_Helpers::is_runguard() && $hide_wpvivid ) {
+			// Try to remove the menu even later in the process for Pro version
+			global $menu;
+
+			if ( is_array( $menu ) ) {
+				foreach ( $menu as $key => $item ) {
+					if ( isset( $item[2] ) && (
+						$item[2] === 'WPvivid' ||
+						$item[2] === 'wpvivid' ||
+						$item[2] === 'wpvivid-dashboard' ||
+						strpos( $item[2], 'wpvivid' ) !== false
+					) ) {
+						unset( $menu[$key] );
+					}
+				}
+			}
 		}
 	}
 
@@ -87,7 +132,9 @@ class Runguard_Support_Overrides {
 		$enable_logtivity = isset( self::$runguard_options['enable_logtivity_menu'] ) && self::$runguard_options['enable_logtivity_menu'];
 		// Check if WP Umbrella should be hidden
 		$hide_wp_umbrella = isset( self::$runguard_options['hide_wp_umbrella'] ) && self::$runguard_options['hide_wp_umbrella'];
-		
+		// Check if WPvivid should be hidden
+		$hide_wpvivid = isset( self::$runguard_options['hide_wpvivid'] ) && self::$runguard_options['hide_wpvivid'];
+
 		if ( ! Runguard_Helpers::is_runguard() ) {
 			if ( $enable_logtivity ) {
 				// Hide Logtivity plugin from non-Runguard admins when setting is enabled
@@ -96,6 +143,11 @@ class Runguard_Support_Overrides {
 			if ( $hide_wp_umbrella ) {
 				// Hide WP Umbrella plugin from non-Runguard admins when setting is enabled
 				unset( $plugins['wp-health/wp-health.php'] );
+			}
+			if ( $hide_wpvivid ) {
+				// Hide both WPvivid plugins from non-Runguard admins when setting is enabled
+				unset( $plugins['wpvivid-backuprestore/wpvivid-backuprestore.php'] );
+				unset( $plugins['wpvivid-backup-pro/wpvivid-backup-pro.php'] );
 			}
 		}
 		return $plugins;

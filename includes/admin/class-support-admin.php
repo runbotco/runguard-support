@@ -160,17 +160,47 @@ class Runguard_Admin {
 			);
 		}
 
-		// Add option to hide "Need Help?" tab in dashboard.
+		// Add option to hide WPvivid (only show if any WPvivid version is installed).
+		if ( $this->is_plugin_installed( 'wpvivid-backuprestore/wpvivid-backuprestore.php' ) || $this->is_plugin_installed( 'wpvivid-backup-pro/wpvivid-backup-pro.php' ) ) {
+			add_settings_field(
+				'hide_wpvivid',
+				__( 'Hide WPvivid?', 'runguard-support' ),
+				array( $this, 'checkbox_element_callback' ),
+				$settings_option,
+				'options_section',
+				array(
+					'menu'  => $settings_option,
+					'id'    => 'hide_wpvivid',
+					'label' => __( 'When checked, hides WPvivid plugins from the plugins page and removes the admin menu for normal users (only Runguard admins can see it).', 'runguard-support' ),
+				)
+			);
+		}
+
+		// Add option to hide Helpscout bubble.
 		add_settings_field(
 			'hide_tab',
-			__( 'Hide Help Tab?', 'runguard-support' ),
+			__( 'Hide Helpscout Bubble', 'runguard-support' ),
 			array( $this, 'checkbox_element_callback' ),
 			$settings_option,
 			'options_section',
 			array(
 				'menu'  => $settings_option,
 				'id'    => 'hide_tab',
-				'label' => __( 'Hides the "Need Help?" tab in the bottom of the dashboard.', 'runguard-support' ),
+				'label' => __( 'Hides the Helpscout chat bubble in the bottom-right corner.', 'runguard-support' ),
+			)
+		);
+
+		// Add option to hide topbar help tab.
+		add_settings_field(
+			'disable_helpscout_chat',
+			__( 'Hide Topbar Help Tab', 'runguard-support' ),
+			array( $this, 'checkbox_element_callback' ),
+			$settings_option,
+			'options_section',
+			array(
+				'menu'  => $settings_option,
+				'id'    => 'disable_helpscout_chat',
+				'label' => __( 'Hides the "Runbot Help" from the top admin bar.', 'runguard-support' ),
 			)
 		);
 

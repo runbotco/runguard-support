@@ -12,8 +12,12 @@ function bt_custom_toolbar_links( $wp_admin_bar ) {
 			<link rel="stylesheet" href="<?php echo Runguard::$plugin_dir_url . 'includes/css/html-admin-menu.css?ver=' . RUNGUARD_PLUGIN_VERSION; ?>" type="text/css" media="all">
 		<?php
 
+		// Check if Helpscout chat is disabled
+		$options = get_option( 'runguard_support_settings', array() );
+		$disable_helpscout_chat = isset( $options['disable_helpscout_chat'] ) && $options['disable_helpscout_chat'];
+
 		// Add "Runbot Help" menu item that directly opens support chat
-		if ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'feast-support' ) {
+		if ( ! $disable_helpscout_chat && ( ! isset( $_GET['page'] ) || $_GET['page'] !== 'feast-support' ) ) {
 			$args = array(
 				'id'     => 'runguard-menu',
 				'title'  => '<span class="ab-icon"></span><span class="ab-label">' . __( 'Runbot Help', 'runguard-support' ) . '</span>',
@@ -28,7 +32,7 @@ function bt_custom_toolbar_links( $wp_admin_bar ) {
 			$wp_admin_bar->add_node( $args );
 		}
 
-		if ( Runguard_Helpers::is_runguard() ) {
+		if ( ! $disable_helpscout_chat && Runguard_Helpers::is_runguard() ) {
 
 			// "Plugin Settings" link to open the Runguard Support settings page.
 			$args = array(
